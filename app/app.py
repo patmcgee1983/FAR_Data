@@ -26,4 +26,5 @@ while True:
         print(e)
 
     counter = counter + 1
+    print("Waiting for next scrape")
     time.sleep(300)
