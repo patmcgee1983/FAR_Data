@@ -15,10 +15,15 @@ counter = 1
 
 print("========= Starting Mountain Guide =========")
 while True:
-     print("\n")
-     print("Starting Scraper Job #"+str(counter))
-     
-     
-     SnowScraper.scrape()    
-     counter = counter + 1
-     time.sleep(300)
+    print("\n")
+    print("Starting Scraper Job #" + str(counter))
+
+    try:
+        SnowScraper.scrape()
+
+    except Exception as e:
+        print("Encountered error while scraping")
+        print(e)
+
+    counter = counter + 1
+    time.sleep(300)

@@ -302,8 +302,18 @@ def scrape():
     else:
         print("No temperature updates")
 
+    cnx.commit()
+    print("done")
     mycursor.close()
     cnx.close()
 
 
-scrape()
+print("Scraping")
+
+try:
+    scrape()
+
+except Exception as e:
+    print("Encountered error while scraping")
+    print(e)
+
