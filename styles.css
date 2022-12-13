@@ -1,0 +1,83 @@
+.lgTxt
+{
+	font-size: 16px;
+	text-align: center;
+	font-weight: bold;
+}
+.txt
+{
+	font-size: 10px;
+}
+.full-table
+{
+	width: 100%;
+}
+th
+{
+	text-align: center;
+}
+td
+{
+	font-size: 10px;
+}
+.popUpContent
+{
+	text-align: center;
+}
+.status
+{
+	text-align: center;
+	padding: 2px;
+	border: 1px solid black;
+	border-radius: 10px;
+	color: #fff;
+	font-size: 10px;
+}
+.open
+{
+	background-color: #28a745;
+}
+.closed
+{
+	background-color: #dc3545;
+}
+
+.standby
+{
+	background-color: #ffc107;
+}
+
+.container
+{
+	width: 100%;
+	text-align: center;
+}
+.mainContainer 
+{
+	border: 2px solid black;
+	border-radius: 15px;
+	/* width: 360px; */
+	padding: 10px;
+	margin: 5px;
+	text-align: center;
+}
+
+.temperatureContainer
+{
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	width: 250px;
+	text-align: center;
+}
+
+.predictionContainer
+{
+	border: 1px solid black;
+	
+}
+
+.stockCard
+{
+	cursor: pointer;
+}
