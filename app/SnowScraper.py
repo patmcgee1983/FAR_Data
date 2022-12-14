@@ -288,7 +288,7 @@ def scrape():
             i = 0
 
             sql = "SHOW COLUMNS FROM `Temperatures` LIKE '" + currentTempObject + "';"
-            myresult = mycursor.execute(sql)
+            mycursor = mycursor.execute(sql)
             myresult = mycursor.fetchall()
 
             if (not myresult):
