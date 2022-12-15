@@ -168,6 +168,7 @@ def scrape():
             mycursor.execute(sql)
 
             i = i + 1
+            cnx.commit()
     else:
         print("No bowl updates")
 
@@ -233,6 +234,8 @@ def scrape():
             sql = "UPDATE NewSnow SET " + currentSnowObject + "='" + currentNewSnowValue + "' WHERE LastUpdate = '" + newSnowLastUpdate + "'"
             mycursor.execute(sql)
 
+            cnx.commit()
+
     else:
         print("No new snow updates")
 
@@ -288,7 +291,7 @@ def scrape():
             i = 0
 
             sql = "SHOW COLUMNS FROM `Temperatures` LIKE '" + currentTempObject + "';"
-            mycursor = mycursor.execute(sql)
+            mycursor.execute(sql)
             myresult = mycursor.fetchall()
 
             if (not myresult):
@@ -298,6 +301,7 @@ def scrape():
             print("Writing value to column " + currentTempObject)
             sql = "UPDATE Temperatures SET " + currentTempObject + "='" + currentTempValue + "' WHERE LastUpdate = '" + tempLastUpdate + "'"
             mycursor.execute(sql)
+            cnx.commit()
 
     else:
         print("No temperature updates")
