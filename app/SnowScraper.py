@@ -312,7 +312,6 @@ def scrape():
     #                       Comments Update
     ###############################################################################
 
-    print("Getting Comments")
     commentsLastUpdateIndex = objects.index("snowReportTH_SnowreportCommentsSaveDate")
     commentsLastUpdate = values[commentsLastUpdateIndex]
 
@@ -348,11 +347,12 @@ def scrape():
     myresult = mycursor.fetchall()
 
     if (not myresult):
-
         print("New Comments updates were detected at " + str(datetime.now()) + "!")
         sql = "INSERT INTO Comments (LastUpdate, Comments) VALUES ('{0}', '{1}')".format(commentsLastUpdate, values[objects.index("SnowreportComments")].replace('"', "").replace("\\n", "").replace("\\r", ""))
         mycursor.execute(sql)
 
+    else:
+        print("No new comments")
 
     cnx.commit()
     print("done")
