@@ -70,7 +70,10 @@ def scrape():
         quoted = re.compile('"[^"]*"')
 
         for value in quoted.findall(word):
-            values[i] = cleanhtml(value.replace('"', ''))
+            if objects[i] == 'SnowreportComments':
+                values[i] = r1[i].replace("if (parent.document.getElementById('SnowreportComments')) {parent.document.getElementById('SnowreportComments').innerHTML= \"", '').replace("\";}","")
+            else:
+                values[i] = cleanhtml(value.replace('"', ''))
 
         i = i + 1
 
@@ -302,9 +305,54 @@ def scrape():
             sql = "UPDATE Temperatures SET " + currentTempObject + "='" + currentTempValue + "' WHERE LastUpdate = '" + tempLastUpdate + "'"
             mycursor.execute(sql)
             cnx.commit()
-
     else:
         print("No temperature updates")
+
+    ###############################################################################
+    #                       Comments Update
+    ###############################################################################
+
+    print("Getting Comments")
+    commentsLastUpdateIndex = objects.index("snowReportTH_SnowreportCommentsSaveDate")
+    commentsLastUpdate = values[commentsLastUpdateIndex]
+
+    in_time = datetime.strptime(commentsLastUpdate.strip(), "%B %d, %Y | %I:%M%p")
+    commentsLastUpdate = datetime.strftime(in_time, "%Y-%m-%d %H:%M:%S")
+
+    mycursor.execute("SHOW TABLES LIKE '%Comments%'; ")
+    myresult = mycursor.fetchall()
+
+    if (not myresult):
+        print("No Comments table found.... creating")
+        mycursor.execute(
+            "CREATE TABLE `far_data`.`Comments` (`Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,PRIMARY KEY (`Id`));")
+
+    sql = "SHOW COLUMNS FROM `Comments` LIKE 'LastUpdate';"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    if (not myresult):
+        sql = "ALTER TABLE `far_data`.`Comments` ADD COLUMN LastUpdate DATETIME UNIQUE;"
+        mycursor.execute(sql)
+
+    sql = "SHOW COLUMNS FROM `Comments` LIKE 'Comments';"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    if (not myresult):
+        sql = "ALTER TABLE `far_data`.`Comments` ADD COLUMN Comments VARCHAR(2000);"
+        mycursor.execute(sql)
+
+    sql = "SELECT * FROM `far_data`.`Comments` WHERE LastUpdate = '" + commentsLastUpdate + "'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    if (not myresult):
+
+        print("New Comments updates were detected at " + str(datetime.now()) + "!")
+        sql = "INSERT INTO Comments (LastUpdate, Comments) VALUES ('{0}', '{1}')".format(commentsLastUpdate, values[objects.index("SnowreportComments")].replace('"', "").replace("\\n", "").replace("\\r", ""))
+        mycursor.execute(sql)
+
 
     cnx.commit()
     print("done")
